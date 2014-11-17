@@ -1,0 +1,17 @@
+REGEDIT
+; This .REG file may be used by your SETUP program.
+;   If a SETUP program is not available, the entries below will be
+;   registered in your InitInstance automatically with a call to
+;   CWinApp::RegisterShellFileTypes and COleObjectFactory::UpdateRegistryAll.
+
+
+HKEY_CLASSES_ROOT\VisualAutomation.Application = VisualAutomation Application
+
+
+HKEY_CLASSES_ROOT\VisualAutomation.Application\CLSID = {1B6079FA-92EF-4377-9BDA-7888529679DD}
+
+HKEY_CLASSES_ROOT\CLSID\{1B6079FA-92EF-4377-9BDA-7888529679DD} = VisualAutomation Application
+HKEY_CLASSES_ROOT\CLSID\{1B6079FA-92EF-4377-9BDA-7888529679DD}\ProgId = VisualAutomation.Application
+
+
+HKEY_CLASSES_ROOT\CLSID\{1B6079FA-92EF-4377-9BDA-7888529679DD}\LocalServer32 = VisualAutomation.EXE

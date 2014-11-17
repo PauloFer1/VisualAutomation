@@ -1,0 +1,29 @@
+// VisualAutomation.idl : type library source for VisualAutomation.exe
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (VisualAutomation.tlb).
+
+[ uuid(2CF9B158-2D41-4628-A401-CED9D023C65D), version(1.0) ]
+library VisualAutomation
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	//  Primary dispatch interface for CVisualAutomationDoc
+	
+	[ uuid(00706EDC-9BBD-4FB7-BFAB-5AF49DE21980) ]
+	dispinterface IVisualAutomation
+	{
+		properties:
+			
+		methods:
+	};
+
+	//  Class information for CVisualAutomationDoc
+	
+	[ uuid(1B6079FA-92EF-4377-9BDA-7888529679DD) ]
+	coclass VisualAutomation
+	{
+		[default] dispinterface IVisualAutomation;
+	};
+};
