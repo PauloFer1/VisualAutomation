@@ -38,7 +38,7 @@ public:
 	int setBlur(int value);
 	int blurValue;
 	int thresholdValue;
-	Mat processImage();
+	int processImage();
 	CImage m_canny;
 private:
 	int imgWidth;
@@ -46,5 +46,28 @@ private:
 	int renderCanny(Mat canny);
 public:
 	CStatic* cannyWnd;
+	int showCanny();
+	int showProcImage();
+private:
+	bool isCannyWnd;
+	bool isProcWnd;
+public:
+	int closeCanny();
+	int closeProcImage();
+	int renderProcImage(Mat img);
+	Scalar filterColor;
+	int setFilterColor(int r, int g, int b);
+	int applyContrast(int value);
+	Mat thresholdImg(int value, Mat src, int type);
+	int thresholdProcValue;
+	int setThresholdValue(int value);
+	int typeThreshold;
+	int thresholdFunction;
+	int removeNoiseMat(Mat * imgs, Mat dst);
+private:
+	Mat* sample;
+public:
+	bool useThreshold;
+	void checkLines(Mat src, Mat dst, vector<Vec4i> lines);
 };
 

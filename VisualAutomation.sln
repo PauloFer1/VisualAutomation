@@ -7,14 +7,23 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VisualAutomation", "VisualA
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|Win32 = CD_ROM|Win32
 		Debug|Win32 = Debug|Win32
+		DVD-5|Win32 = DVD-5|Win32
 		Release|Win32 = Release|Win32
+		SingleImage|Win32 = SingleImage|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{260959C5-ADD4-45B7-8DDA-D4B676109FCD}.CD_ROM|Win32.ActiveCfg = Release|Win32
+		{260959C5-ADD4-45B7-8DDA-D4B676109FCD}.CD_ROM|Win32.Build.0 = Release|Win32
 		{260959C5-ADD4-45B7-8DDA-D4B676109FCD}.Debug|Win32.ActiveCfg = Debug|Win32
 		{260959C5-ADD4-45B7-8DDA-D4B676109FCD}.Debug|Win32.Build.0 = Debug|Win32
+		{260959C5-ADD4-45B7-8DDA-D4B676109FCD}.DVD-5|Win32.ActiveCfg = Debug|Win32
+		{260959C5-ADD4-45B7-8DDA-D4B676109FCD}.DVD-5|Win32.Build.0 = Debug|Win32
 		{260959C5-ADD4-45B7-8DDA-D4B676109FCD}.Release|Win32.ActiveCfg = Release|Win32
 		{260959C5-ADD4-45B7-8DDA-D4B676109FCD}.Release|Win32.Build.0 = Release|Win32
+		{260959C5-ADD4-45B7-8DDA-D4B676109FCD}.SingleImage|Win32.ActiveCfg = Release|Win32
+		{260959C5-ADD4-45B7-8DDA-D4B676109FCD}.SingleImage|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

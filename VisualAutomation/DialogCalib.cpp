@@ -15,8 +15,9 @@ IMPLEMENT_DYNAMIC(DialogCalib, CDialogEx)
 
 DialogCalib::DialogCalib(CWnd* pParent /*=NULL*/)
 	: CDialogEx(DialogCalib::IDD, pParent)
+	, typeThreshold(0)
+//	, thresholdFunction(0)
 {
-
 }
 void DialogCalib::initVision()
 {
@@ -24,7 +25,6 @@ void DialogCalib::initVision()
 	if (Camera::getInstance()->hasCamera == false)
 		Camera::getInstance()->initCamera();
 	Detection::getInstance()->imgWnd = &imageViewer;
-	Detection::getInstance()->cannyWnd = &cannyViewer;
 }
 DialogCalib::~DialogCalib()
 {
@@ -38,12 +38,30 @@ void DialogCalib::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SLIDER_BRIGH, sliderBright);
 	DDX_Control(pDX, IDC_SLIDER_EXP, sliderExp);
 	DDX_Control(pDX, IDC_SLIDER_THRE, sliderThres);
+	DDX_Control(pDX, IDC_SLIDER_CONTRAST, sliderContrast);
+	DDX_Control(pDX, IDC_SLIDER_ZOOM, sliderZoom);
+	DDX_Control(pDX, IDC_SLIDER_THRESHOLD, sliderThreshold);
+	DDX_Radio(pDX, IDC_RADIO1, typeThreshold);
+	DDV_MinMaxInt(pDX, typeThreshold, 0, 1);
+	//  DDX_Radio(pDX, IDC_RADIO3, thresholdFunction);
+	//  DDV_MinMaxInt(pDX, thresholdFunction, 0, 1);
+	DDX_Control(pDX, IDC_CHECK1, checkAdaptive);
 
 	sliderBlur.SetRange(0, 10, TRUE);
 	sliderThres.SetRange(0, 255, TRUE);
 	sliderBright.SetRange(0, 255, TRUE);
 	sliderExp.SetRange(-10, 20, TRUE);
-	DDX_Control(pDX, IDC_STATIC_CANNY, cannyViewer);
+	sliderContrast.SetRange(0, 10, TRUE);
+	sliderZoom.SetRange(0, 100, TRUE);
+	sliderThreshold.SetRange(0, 255, TRUE);
+	checkAdaptive.SetCheck(1);
+
+
+
+	//  DDX_Check(pDX, IDC_CHECK1, checkAdaptive);
+	//  DDV_MinMaxInt(pDX, checkAdaptive, 0, 1);
+
+	DDX_Control(pDX, IDC_CHECK2, useThreshCheckl);
 }
 
 
@@ -57,6 +75,13 @@ BEGIN_MESSAGE_MAP(DialogCalib, CDialogEx)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_BRIGH, &DialogCalib::OnNMCustomdrawSliderBrigh)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_EXP, &DialogCalib::OnNMCustomdrawSliderExp)
 	ON_WM_HSCROLL()
+	ON_BN_CLICKED(IDC_BUTTON_CANNY_VIEWER, &DialogCalib::OnBnClickedButtonCannyViewer)
+	ON_BN_CLICKED(IDC_BUTTON_PROC_IMG_VIEWER, &DialogCalib::OnBnClickedButtonProcImgViewer)
+	ON_BN_CLICKED(IDC_MFCCOLORBUTTON1, &DialogCalib::OnBnClickedMfccolorbutton1)
+	ON_BN_CLICKED(IDC_RADIO1, &DialogCalib::OnBnClickedRadio1)
+	ON_BN_CLICKED(IDC_RADIO2, &DialogCalib::OnBnClickedRadio2)
+	ON_BN_CLICKED(IDC_CHECK1, &DialogCalib::OnBnClickedCheck1)
+	ON_BN_CLICKED(IDC_CHECK2, &DialogCalib::OnBnClickedCheck2)
 END_MESSAGE_MAP()
 
 
@@ -158,8 +183,102 @@ void DialogCalib::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	{
 		Camera::getInstance()->setBrightness(value);
 	}
+	else if (pSlider == &sliderContrast)
+	{                        
+		Camera::getInstance()->setConstrast(value);
+	}
+	else if (pSlider == &sliderZoom)
+	{
+		Camera::getInstance()->setZoom(value);
+	}
+	else if (pSlider == &sliderThreshold)
+	{
+		Detection::getInstance()->setThresholdValue(value);
+	}
 	CString str;
 	str.Format(_T("val: %d"), value);
 	//AfxMessageBox(str);
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+
+
+void DialogCalib::OnBnClickedButtonCannyViewer()
+{
+	Detection::getInstance()->showCanny();
+}
+
+
+void DialogCalib::OnBnClickedButtonProcImgViewer()
+{
+	Detection::getInstance()->showProcImage();
+}
+
+
+void DialogCalib::OnBnClickedMfccolorbutton1()
+{
+	// TODO: Add your control notification handler code here
+	COLORREF color = colorPick.GetColor();
+	int r = (GetRValue(color));
+	int b = GetBValue(color);
+	int g = GetGValue(color);
+	Detection::getInstance()->setFilterColor(r, g, b);
+
+}
+
+
+
+
+
+void DialogCalib::OnBnClickedRadio1()
+{
+	CString str;
+	str.Format(_T("val: %d"), typeThreshold);
+	AfxMessageBox(str);
+	if (typeThreshold==0)
+		Detection::getInstance()->typeThreshold = ADAPTIVE_THRESH_GAUSSIAN_C;
+	else
+		Detection::getInstance()->typeThreshold = ADAPTIVE_THRESH_MEAN_C;
+}
+
+
+void DialogCalib::OnBnClickedRadio2()
+{
+	CString str;
+	str.Format(_T("val: %d"),typeThreshold);
+	AfxMessageBox(str);
+	if (typeThreshold == 0)
+		Detection::getInstance()->typeThreshold = ADAPTIVE_THRESH_GAUSSIAN_C;
+	else
+	{
+		Detection::getInstance()->typeThreshold = ADAPTIVE_THRESH_MEAN_C;
+		
+	}
+}
+
+
+
+
+
+void DialogCalib::OnBnClickedCheck1()
+{
+	CString str;
+	str.Format(_T("val: %d"), checkAdaptive.GetCheck());
+//	AfxMessageBox(str);
+	if (checkAdaptive.GetCheck())
+		Detection::getInstance()->thresholdFunction = 0;
+	else
+		Detection::getInstance()->thresholdFunction = 1;
+}
+
+
+void DialogCalib::OnBnClickedCheck2()
+{
+	CString str;
+	str.Format(_T("val: %d"), useThreshCheckl.GetCheck());
+		AfxMessageBox(str);
+	if (useThreshCheckl.GetCheck())
+		Detection::getInstance()->useThreshold = true;
+	else
+		Detection::getInstance()->useThreshold = false;
 }

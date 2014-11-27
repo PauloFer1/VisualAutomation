@@ -242,6 +242,8 @@ void CVisualAutomationDlg::OnBnClickedButton2()
 	AfxMessageBox(str);*/
 	d->showWnd();
 	m_calib.DoModal();
+	m_calib.ShowWindow(WS_MAXIMIZEBOX);
+	
 }
 
 

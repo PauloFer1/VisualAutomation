@@ -29,7 +29,7 @@
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfMfc>Static</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Detection.h" />
     <ClInclude Include="DialogCalib.h" />
     <ClInclude Include="DialogConn.h" />
@@ -121,9 +122,11 @@
     <ClInclude Include="VisualAutomation.h" />
     <ClInclude Include="VisualAutomationDlg.h" />
     <ClInclude Include="VisualRecognition.h" />
+    <ClInclude Include="XMLLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Constants.cpp" />
     <ClCompile Include="Detection.cpp" />
     <ClCompile Include="DialogCalib.cpp" />
     <ClCompile Include="DialogConn.cpp" />
@@ -136,11 +139,14 @@
     <ClCompile Include="VisualAutomation.cpp" />
     <ClCompile Include="VisualAutomationDlg.cpp" />
     <ClCompile Include="VisualRecognition.cpp" />
+    <ClCompile Include="XMLLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="VisualAutomation.idl" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\msxml6.dll" />
+    <None Include="..\msxml6r.dll" />
     <None Include="res\VisualAutomation.rc2" />
     <None Include="VisualAutomation.reg" />
   </ItemGroup>
@@ -149,6 +155,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\VisualAutomation.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="config.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

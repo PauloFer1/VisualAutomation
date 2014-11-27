@@ -41,12 +41,13 @@ int Camera::initCamera()
 {
 	if (!cap.isOpened())
 	{
-		cap.open(1);
+		bool cam;
+		cap.open(0);
 		cap.set(CV_CAP_PROP_FOURCC, CV_FOURCC('M', 'J', 'P', 'G'));
 		cap.set(CV_CAP_PROP_SHARPNESS, 20);
 		cap.set(CV_CAP_PROP_FPS, 4);
-		cap.set(CV_CAP_PROP_FRAME_HEIGHT, 1080);
-		cap.set(CV_CAP_PROP_FRAME_WIDTH, 1920);
+		cam = cap.set(CV_CAP_PROP_FRAME_HEIGHT, 1920);
+		cap.set(CV_CAP_PROP_FRAME_WIDTH, 1080);
 		//cap.open("video.MP4");
 	}
 	if (!cap.isOpened())
@@ -86,4 +87,16 @@ int Camera::setExposure(int value)
 {
 	cap.set(CV_CAP_PROP_EXPOSURE, value);
 	return 1;
+}
+int Camera::setConstrast(int value)
+{
+	cap.set(CV_CAP_PROP_CONTRAST, value);
+	return(1);
+}
+
+
+int Camera::setZoom(int value)
+{
+	cap.set(CV_CAP_PROP_ZOOM, value);
+	return(1);
 }

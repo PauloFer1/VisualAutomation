@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "VisualAutomation.h"
 #include "VisualAutomationDlg.h"
+#include "XMLLoader.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -134,6 +135,9 @@ BOOL CVisualAutomationApp::InitInstance()
 	{
 		delete pShellManager;
 	}
+
+
+	XMLLoader::getInstance()->loadDOM();
 
 	// Since the dialog has been closed, return FALSE so that we exit the
 	//  application, rather than start the application's message pump.

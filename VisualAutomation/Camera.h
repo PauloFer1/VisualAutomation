@@ -25,5 +25,7 @@ public:
 	bool hasCamera;
 	int setBrightness(int value);
 	int setExposure(int value);
+	int setConstrast(int value);
+	int setZoom(int value);
 };
 

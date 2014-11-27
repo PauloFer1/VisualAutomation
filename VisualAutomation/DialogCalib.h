@@ -1,6 +1,7 @@
 #pragma once
 #include "afxwin.h"
 #include "afxcmn.h"
+#include "afxcolorbutton.h"
 
 
 // DialogCalib dialog
@@ -41,4 +42,27 @@ public:
 	afx_msg void OnNMCustomdrawSliderExp(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	CStatic cannyViewer;
+	afx_msg void OnBnClickedButtonCannyViewer();
+	afx_msg void OnBnClickedButtonProcImgViewer();
+	afx_msg void OnBnClickedMfccolorbutton1();
+	CMFCColorButton colorPick;
+	CSliderCtrl sliderContrast;
+	afx_msg void OnNMCustomdrawSliderContrast2(NMHDR *pNMHDR, LRESULT *pResult);
+	CSliderCtrl sliderZoom;
+	afx_msg void OnNMCustomdrawSliderThreshold(NMHDR *pNMHDR, LRESULT *pResult);
+	CSliderCtrl sliderThreshold;
+//	CButton typeThreshold;
+//	int typeThreshold;
+//	bool typeThreshold;
+	afx_msg void OnBnClickedRadio1();
+	int typeThreshold;
+	afx_msg void OnBnClickedRadio2();
+//	int thresholdFunction;
+	afx_msg void OnBnClickedRadio3();
+	afx_msg void OnBnClickedRadio4();
+//	int checkAdaptive;
+	afx_msg void OnBnClickedCheck1();
+	CButton checkAdaptive;
+	CButton useThreshCheckl;
+	afx_msg void OnBnClickedCheck2();
 };

@@ -4,7 +4,7 @@
 
 
  /* File created by MIDL compiler version 8.00.0603 */
-/* at Sat Nov 15 18:19:54 2014
+/* at Thu Nov 20 19:50:32 2014
  */
 /* Compiler settings for VisualAutomation.idl:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0603 
