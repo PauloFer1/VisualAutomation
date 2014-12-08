@@ -7,6 +7,8 @@
 #include "afxdialogex.h"
 #include "Detection.h"
 #include "Camera.h"
+#include "Constants.h"
+#include "XMLLoader.h"
 
 
 // DialogCalib dialog
@@ -23,7 +25,10 @@ void DialogCalib::initVision()
 {
 	//img = (CStatic *)GetDlgItem(IDC_CALIB_IMG);
 	if (Camera::getInstance()->hasCamera == false)
+	{
 		Camera::getInstance()->initCamera();
+		Camera::getInstance()->setWndDisplay(&imageViewer);
+	}
 	Detection::getInstance()->imgWnd = &imageViewer;
 }
 DialogCalib::~DialogCalib()
@@ -46,6 +51,9 @@ void DialogCalib::DoDataExchange(CDataExchange* pDX)
 	//  DDX_Radio(pDX, IDC_RADIO3, thresholdFunction);
 	//  DDV_MinMaxInt(pDX, thresholdFunction, 0, 1);
 	DDX_Control(pDX, IDC_CHECK1, checkAdaptive);
+	DDX_Control(pDX, IDC_CHECK2, useThreshCheckl);
+	DDX_Control(pDX, IDC_EDIT1, objWidthInput);
+	DDX_Control(pDX, IDC_EDIT2, objHeightInput);
 
 	sliderBlur.SetRange(0, 10, TRUE);
 	sliderThres.SetRange(0, 255, TRUE);
@@ -56,12 +64,16 @@ void DialogCalib::DoDataExchange(CDataExchange* pDX)
 	sliderThreshold.SetRange(0, 255, TRUE);
 	checkAdaptive.SetCheck(1);
 
-
+	CString w;
+	w.Format(_T("%d"), Constants::getInstance()->getObjWidth());
+	CString h;
+	h.Format(_T("%d"), Constants::getInstance()->getObjHeight());
+	objWidthInput.SetWindowTextW(w);
+	objHeightInput.SetWindowTextW(h);
 
 	//  DDX_Check(pDX, IDC_CHECK1, checkAdaptive);
 	//  DDV_MinMaxInt(pDX, checkAdaptive, 0, 1);
 
-	DDX_Control(pDX, IDC_CHECK2, useThreshCheckl);
 }
 
 
@@ -82,6 +94,7 @@ BEGIN_MESSAGE_MAP(DialogCalib, CDialogEx)
 	ON_BN_CLICKED(IDC_RADIO2, &DialogCalib::OnBnClickedRadio2)
 	ON_BN_CLICKED(IDC_CHECK1, &DialogCalib::OnBnClickedCheck1)
 	ON_BN_CLICKED(IDC_CHECK2, &DialogCalib::OnBnClickedCheck2)
+	ON_BN_CLICKED(IDC_BUTTON1, &DialogCalib::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -93,6 +106,7 @@ void DialogCalib::OnBnClickedOk()
 	// TODO: Add your control notification handler code here
 	Detection::getInstance()->destroyWnd();
 	Sleep(50);
+	XMLLoader::getInstance()->saveXML();
 	CDialogEx::OnOK();
 }
 
@@ -170,30 +184,37 @@ void DialogCalib::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	if (pSlider==&sliderBlur)
 	{
 		Detection::getInstance()->setBlur(value);
+		Constants::getInstance()->setBlur(value);
 	}
 	else if (pSlider == &sliderThres)
 	{
 		Detection::getInstance()->setThreshold(value);
+		Constants::getInstance()->setCanny(value);
 	}
 	else if (pSlider == &sliderExp)
 	{
 		Camera::getInstance()->setExposure(value);
+		Constants::getInstance()->setExposure(value);
 	}
 	else if(pSlider == &sliderBright)
 	{
 		Camera::getInstance()->setBrightness(value);
+		Constants::getInstance()->setBright(value);
 	}
 	else if (pSlider == &sliderContrast)
 	{                        
 		Camera::getInstance()->setConstrast(value);
+		Constants::getInstance()->setConstrast(value);
 	}
 	else if (pSlider == &sliderZoom)
 	{
 		Camera::getInstance()->setZoom(value);
+		Constants::getInstance()->setZoom(value);
 	}
 	else if (pSlider == &sliderThreshold)
 	{
 		Detection::getInstance()->setThresholdValue(value);
+		Constants::getInstance()->setThresholdVal(value);
 	}
 	CString str;
 	str.Format(_T("val: %d"), value);
@@ -276,9 +297,25 @@ void DialogCalib::OnBnClickedCheck2()
 {
 	CString str;
 	str.Format(_T("val: %d"), useThreshCheckl.GetCheck());
-		AfxMessageBox(str);
+		//AfxMessageBox(str);
 	if (useThreshCheckl.GetCheck())
 		Detection::getInstance()->useThreshold = true;
 	else
 		Detection::getInstance()->useThreshold = false;
+}
+
+
+void DialogCalib::OnBnClickedButton1()
+{
+	CString width;
+	CString height;
+	objWidthInput.GetWindowTextW(width);
+	objHeightInput.GetWindowTextW(height);
+
+	int w = _wtoi(width);
+	int h = _wtoi(height);
+	Constants::getInstance()->setObjWidth(w);
+	Constants::getInstance()->setObjHeight(h);
+
+	AfxMessageBox(_T("WIDTH & HEIGHT CHANGED"), MB_OK|MB_ICONINFORMATION);
 }

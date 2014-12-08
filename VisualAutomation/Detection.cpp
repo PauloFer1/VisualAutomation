@@ -59,7 +59,8 @@ void __cdecl Detection::render(void * parg)
 
 	while (Detection::getInstance()->isRender == true)
 	{
-		Camera::getInstance()->getCapture() >> Detection::getInstance()->src;
+		//Mat srcTmp = Mat(640, 480, CV_8UC1, (UCHAR)Camera::getInstance()->getFrame());
+	/*	Camera::getInstance()->getCapture() >> Detection::getInstance()->src;
 		VideoCapture cap = Camera::getInstance()->getCapture();
 		int i = 0;
 		Mat img[5];
@@ -67,11 +68,9 @@ void __cdecl Detection::render(void * parg)
 		{
 			cap >> img[i];
 		}
-//		fastNlMeansDenoisingColoredMulti((InputArrayOfArrays)img, Detection::getInstance()->src, 2, 3);
-	//	fastNlMeansDenoisingColored(img[2], Detection::getInstance()->src);
 		Detection::getInstance()->sample = img;
 		if (!Detection::getInstance()->src.empty())
-		//if (!img[3].empty())
+		//if (!srcTmp.empty())
 		{
 			if (Detection::getInstance()->m_img)
 			{
@@ -82,7 +81,7 @@ void __cdecl Detection::render(void * parg)
 
 			Mat tmp, tmp2;
 			flip(Detection::getInstance()->src, tmp, 0);
-			//flip(img[3], tmp, 0);
+			//flip(srcTmp, tmp, 0);
 			resize(tmp, tmp2, Size(640,480), 0, 0, INTER_AREA);
 			//Size m_sizeShow = Size(Detection::getInstance()->src.size().width, Detection::getInstance()->src.size().height);
 			Size m_sizeShow = Size(640  , 480);
@@ -119,7 +118,8 @@ void __cdecl Detection::render(void * parg)
 	//	int key = waitKey(10);
 	//	if (key == 27) break;
 		Sleep(100);
-
+		*/
+		Detection::getInstance()->processImage();
 	}
 	Beep(('A') * 100, 175);
 	_endthread();
@@ -127,10 +127,17 @@ void __cdecl Detection::render(void * parg)
 }
 int Detection::showWnd()
 {
+	CString s;
+	char* si = Camera::getInstance()->getFrame();
+	int si2 = sizeof(si);
+	//int si2 = Camera::getInstance()->getCameraWidth();
+	s.Format(_T("%d"), si2);
+	//AfxMessageBox(s);
+
 	if (!Camera::getInstance()->getCapture().isOpened())
 	{
 		AfxMessageBox(_T("Detection::showWnd::CAMERA NOT CONNECTED!"));
-		return(-2);
+		//return(-2);
 	}
 	isRender = true;
 
@@ -147,9 +154,10 @@ int Detection::showWnd()
 
 	imgWidth = src.size().width;
 	imgHeight = src.size().height;
+
 	
 	//************ WINDOW **************
-	namedWindow("DEBUG", CV_WINDOW_AUTOSIZE);
+//	namedWindow("DEBUG", CV_WINDOW_AUTOSIZE);
 	//namedWindow("CONTOUR", CV_WINDOW_AUTOSIZE);
 	//moveWindow("CONTOUR", 0, 0);
 
@@ -203,9 +211,9 @@ int Detection::processImage()
 {
 	Mat canny_output, blured, lap, src_gray, clone, redOnly;
 
-	src = sample[3];
+	//src = sample[3];
 
-	if (src.empty())
+	/*if (src.empty())
 		return(-2);
 	else if (src.channels()>1)
 		cvtColor(~src, src_gray, CV_BGR2GRAY);
@@ -241,22 +249,34 @@ int Detection::processImage()
 	
 	//**RED
 	//inRange(src, filterColor, filterColor, redOnly);
+	*/
 
 	if (isCannyWnd)
 		renderCanny(canny_output);
 	if (isProcWnd)
-		renderProcImage(blured);
-
-	vector<Vec4i> lines;
-	checkLines(blured, src, lines);
+	{
+		Mat ids = Mat(Camera::getInstance()->getCameraHeight(), Camera::getInstance()->getCameraWidth(), CV_8UC1, (UCHAR*)(Camera::getInstance()->getFrame()));
+		//IplImage *img = cvCreateImageHeader(cvSize(Camera::getInstance()->getCameraWidth(), Camera::getInstance()->getCameraHeight()), IPL_DEPTH_8U, 1);
+		//img->imageData = (char*)Camera::getInstance()->getFrame();
+		//Mat ids;
+		//IplImage * ids = img;
+	//	ids = cvarrToMat(img);
+		//renderProcImage(blured);
+		CString s;
+	//	s.Format(_T("%"), ids->imageSize()));
+	//	AfxMessageBox(s);
+		renderProcImage(ids);
+	}
+	//vector<Vec4i> lines;
+	//checkLines(blured, src, lines);
 	
-	lap.release();
+	/*lap.release();
 	src_gray.release();
 	clone.release();
 	blured.release();
 	canny_output.release();
 	redOnly.release();
-	
+	*/
 	return(1);
 }
 
@@ -414,7 +434,7 @@ void Detection::checkLines(Mat src, Mat dst, vector<Vec4i> lines)
 		Mat roi;
 		Rect crop = Rect(0, (upper[0]), dst.size().width, 30);
 		src(crop).copyTo(roi);
-		imshow("DEBUG", roi);
+	//	imshow("DEBUG", roi);
 		roi.release();
 	}
 }

@@ -1,16 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xmlversion = '1.0' ?> 
 <config xmlns:dt='urn:schemas - microsoft - com : datatypes'>
-  <canny dt:dt='int'>61</canny>
-  <blur dt:dt='int'>2</blur>
-  <bright dt:dt='int'>10</bright>
-  <contrast dt:dt='int'>10</contrast>
-  <exposure dt:dt='int'>-16</exposure>
-  <measure dt:dt='int'>137</measure>
-  <zoom dt:dt='int'>0</zoom>
-  <objectWidth dt:dt='int'>42</objectWidth>
-  <objectHeight dt:dt='int'>60</objectHeight>
-  <threshold dt:dt='int'>255</threshold>
+  <canny dt:dt='int'>-842150451</canny>
+  <blur dt:dt='int'>-842150451</blur>
+  <bright dt:dt='int'>-842150451</bright>
+  <contrast dt:dt='int'>-842150451</contrast>
+  <exposure dt:dt='int'>-842150451</exposure>
+  <calibValue dt:dt='float'>-8.4215e+008</calibValue>
+  <objectWidth dt:dt='int'>450</objectWidth>
+  <objectHeight dt:dt='int'>340</objectHeight>
+  <threshold dt:dt='int'>-842150451</threshold>
   <hasThreshold dt:dt='bool'>true</hasThreshold>
-  <typeThreshold dt:dt='int'>1</typeThreshold>
-  <calibValue dt:dt='float'>2</calibValue>
+  <typeThreshold dt:dt='int'>-842150451</typeThreshold>
 </config>

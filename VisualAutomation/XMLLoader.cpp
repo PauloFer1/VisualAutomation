@@ -49,11 +49,13 @@ void XMLLoader::loadDOM()
 	VARIANT varFileName;
 	VariantInit(&varFileName);
 
-	CHK_HR(CreateAndInitDOM(&pXMLDom));
+	
+	CHK_HR(this->CreateAndInitDOM(&pXMLDom));
 
 	// XML file name to load
 	CHK_HR(VariantFromString(L"config.xml", varFileName));
 	CHK_HR(pXMLDom->load(varFileName, &varStatus));
+
 	if (varStatus == VARIANT_TRUE)
 	{
 		CHK_HR(pXMLDom->get_xml(&bstrXML));
@@ -64,6 +66,7 @@ void XMLLoader::loadDOM()
 		// Failed to load xml, get last parsing error
 		CHK_HR(pXMLDom->get_parseError(&pXMLErr));
 		CHK_HR(pXMLErr->get_reason(&bstrErr));
+		AfxMessageBox(_T("Failed to load DOM from config.xml"));
 		printf("Failed to load DOM from config.xml. %S\n", bstrErr);
 	}
 
@@ -146,9 +149,11 @@ void XMLLoader::loadDOM()
 			else if (!wcscmp(bstrNodeName, L"objectHeight"))
 			{
 				pNode->get_text(&s);
+				VARIANT val;
+				pNode->get_nodeValue(&val);
 				sc = _com_util::ConvertBSTRToString(s);
 				v = atoi(sc);
-				Constants::getInstance()->setObjHeight(v);
+				Constants::getInstance()->setObjHeight(val.intVal);
 			}
 			else if (!wcscmp(bstrNodeName, L"zoom"))
 			{
@@ -217,10 +222,10 @@ void XMLLoader::saveXML()
 		xml << "<exposure dt:dt='int'>" << Constants::getInstance()->getExposure() << "</exposure>\n";
 		xml << "<calibValue dt:dt='float'>" << Constants::getInstance()->getCalibVal() << "</calibValue>\n";
 		xml << "<objectWidth dt:dt='int'>" << Constants::getInstance()->getObjWidth() << "</objectWidth>";
-		xml << "<objectHeight dt : dt = 'int'>" << Constants::getInstance()->getObjHeight() << "< / objectHeight>";
+		xml << "<objectHeight dt:dt='int'>" << Constants::getInstance()->getObjHeight() << "</objectHeight>";
 		xml << "<threshold dt:dt='int'>" << Constants::getInstance()->getThresholdVal() << "</threshold>";
-		xml << "<hasThreshold dt : dt = 'bool'>" << Constants::getInstance()->getHasThreshold() << "< / hasThreshold>";
-		xml << "<typeThreshold dt : dt = 'int'>" << Constants::getInstance()->getTypeThresh() << "< / typeThreshold>";
+		xml << "<hasThreshold dt:dt='bool'>" << Constants::getInstance()->getHasThreshold() << "</hasThreshold>";
+		xml << "<typeThreshold dt:dt='int'>" << Constants::getInstance()->getTypeThresh() << "</typeThreshold>";
 		xml << "</config>";
 
 		xml.close();

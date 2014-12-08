@@ -65,4 +65,7 @@ public:
 	CButton checkAdaptive;
 	CButton useThreshCheckl;
 	afx_msg void OnBnClickedCheck2();
+	CEdit objWidthInput;
+	CEdit objHeightInput;
+	afx_msg void OnBnClickedButton1();
 };

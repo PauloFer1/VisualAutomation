@@ -121,6 +121,7 @@ BOOL CVisualAutomationDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
+
 	// TODO: Add extra initialization here
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -242,7 +243,7 @@ void CVisualAutomationDlg::OnBnClickedButton2()
 	AfxMessageBox(str);*/
 	d->showWnd();
 	m_calib.DoModal();
-	m_calib.ShowWindow(WS_MAXIMIZEBOX);
+//	m_calib.ShowWindow(WS_MAXIMIZEBOX);
 	
 }
 

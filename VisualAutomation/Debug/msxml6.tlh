@@ -1,9 +1,9 @@
-﻿// Created by Microsoft (R) C/C++ Compiler Version 12.00.30723.0 (3b72e8e8).
+﻿// Created by Microsoft (R) C/C++ Compiler Version 12.00.30723.0 (c77c66f5).
 //
 // c:\users\paulo\documents\visual studio 2013\projects\visualautomation\visualautomation\debug\msxml6.tlh
 //
 // C++ source equivalent of Win32 type library msxml6.dll
-// compiler-generated file created 11/27/14 at 22:56:39 - DO NOT EDIT!
+// compiler-generated file created 12/02/14 at 07:28:58 - DO NOT EDIT!
 
 #pragma once
 #pragma pack(push, 8)

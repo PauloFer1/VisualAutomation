@@ -113,6 +113,7 @@ BOOL CVisualAutomationApp::InitInstance()
 
 	CVisualAutomationDlg dlg;
 	m_pMainWnd = &dlg;
+	XMLLoader::getInstance()->loadDOM();
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
 	{
@@ -137,7 +138,7 @@ BOOL CVisualAutomationApp::InitInstance()
 	}
 
 
-	XMLLoader::getInstance()->loadDOM();
+	
 
 	// Since the dialog has been closed, return FALSE so that we exit the
 	//  application, rather than start the application's message pump.

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#import <msxml6.dll> raw_interfaces_only
+#import "msxml6.dll" raw_interfaces_only
 #include "Constants.h"
 
 class XMLLoader
