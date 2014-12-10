@@ -114,6 +114,7 @@
     </None>
     <None Include="..\msxml6.dll" />
     <None Include="..\msxml6r.dll" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VisualAutomation.rc">

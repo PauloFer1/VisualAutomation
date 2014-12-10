@@ -153,6 +153,7 @@
   <ItemGroup>
     <None Include="..\msxml6.dll" />
     <None Include="..\msxml6r.dll" />
+    <None Include="ClassDiagram.cd" />
     <None Include="res\VisualAutomation.rc2" />
     <None Include="VisualAutomation.reg" />
   </ItemGroup>
