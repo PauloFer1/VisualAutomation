@@ -40,18 +40,9 @@ public:
 	int thresholdValue;
 	int processImage();
 	CImage m_canny;
-private:
-	int imgWidth;
-	int imgHeight;
-	int renderCanny(Mat canny);
-public:
 	CStatic* cannyWnd;
 	int showCanny();
 	int showProcImage();
-private:
-	bool isCannyWnd;
-	bool isProcWnd;
-public:
 	int closeCanny();
 	int closeProcImage();
 	int renderProcImage(Mat img);
@@ -64,10 +55,16 @@ public:
 	int typeThreshold;
 	int thresholdFunction;
 	int removeNoiseMat(Mat * imgs, Mat dst);
-private:
-	Mat* sample;
-public:
 	bool useThreshold;
 	void checkLines(Mat src, Mat dst, vector<Vec4i> lines);
+	int travelPixels(Mat img);
+private:
+	int imgWidth;
+	int imgHeight;
+	int renderCanny(Mat canny);
+	bool isCannyWnd;
+	bool isProcWnd;
+	Mat* sample;
+	
 };
 

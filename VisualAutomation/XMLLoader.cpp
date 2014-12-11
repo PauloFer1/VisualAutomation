@@ -102,6 +102,8 @@ void XMLLoader::loadDOM()
 				pNode->get_text(&s);
 				sc = _com_util::ConvertBSTRToString(s);
 				v = atoi(sc);
+				VARIANT val;
+				pNode->get_nodeValue(&val);
 				Constants::getInstance()->setBright(v);
 			}
 			else if (!wcscmp(bstrNodeName, L"contrast"))
@@ -109,6 +111,8 @@ void XMLLoader::loadDOM()
 				pNode->get_text(&s);
 				sc = _com_util::ConvertBSTRToString(s);
 				v = atoi(sc);
+				VARIANT val;
+				pNode->get_nodeValue(&val);
 				Constants::getInstance()->setConstrast(v);
 			}
 			else if (!wcscmp(bstrNodeName, L"threshold"))
@@ -116,6 +120,8 @@ void XMLLoader::loadDOM()
 				pNode->get_text(&s);
 				sc = _com_util::ConvertBSTRToString(s);
 				v = atoi(sc);
+				VARIANT val;
+				pNode->get_nodeValue(&val);
 				Constants::getInstance()->setThresholdVal(v);
 			}
 			else if (!wcscmp(bstrNodeName, L"blur"))
@@ -123,13 +129,18 @@ void XMLLoader::loadDOM()
 				pNode->get_text(&s);
 				sc = _com_util::ConvertBSTRToString(s);
 				v = atoi(sc);
+				VARIANT val;
+				pNode->get_nodeValue(&val);
 				Constants::getInstance()->setBlur(v);
 			}
 			else if (!wcscmp(bstrNodeName, L"exposure"))
 			{
 				pNode->get_text(&s);
+				
 				sc = _com_util::ConvertBSTRToString(s);
 				v = atoi(sc);
+				VARIANT val;
+				pNode->get_nodeValue(&val);
 				Constants::getInstance()->setExposure(v);
 			}
 			else if (!wcscmp(bstrNodeName, L"calibValue"))
@@ -137,6 +148,8 @@ void XMLLoader::loadDOM()
 				pNode->get_text(&s);
 				sc = _com_util::ConvertBSTRToString(s);
 				v = stof(sc);
+				VARIANT val;
+				pNode->get_nodeValue(&val);
 				Constants::getInstance()->setCalibVal(v);
 			}
 			else if (!wcscmp(bstrNodeName, L"objectWidth"))
@@ -144,6 +157,9 @@ void XMLLoader::loadDOM()
 				pNode->get_text(&s);
 				sc = _com_util::ConvertBSTRToString(s);
 				v = atoi(sc);
+
+				VARIANT val;
+				pNode->get_nodeValue(&val);
 				Constants::getInstance()->setObjWidth(v);
 			}
 			else if (!wcscmp(bstrNodeName, L"objectHeight"))
@@ -153,13 +169,15 @@ void XMLLoader::loadDOM()
 				pNode->get_nodeValue(&val);
 				sc = _com_util::ConvertBSTRToString(s);
 				v = atoi(sc);
-				Constants::getInstance()->setObjHeight(val.intVal);
+				Constants::getInstance()->setObjHeight(v);
 			}
 			else if (!wcscmp(bstrNodeName, L"zoom"))
 			{
 				pNode->get_text(&s);
 				sc = _com_util::ConvertBSTRToString(s);
 				v = atoi(sc);
+				VARIANT val;
+				pNode->get_nodeValue(&val);
 				Constants::getInstance()->setZoom(v);
 			}
 			else if (!wcscmp(bstrNodeName, L"canny"))
@@ -167,6 +185,8 @@ void XMLLoader::loadDOM()
 				pNode->get_text(&s);
 				sc = _com_util::ConvertBSTRToString(s);
 				v = atoi(sc);
+				VARIANT val;
+				pNode->get_nodeValue(&val);
 				Constants::getInstance()->setCanny(v);
 			}
 			else if (!wcscmp(bstrNodeName, L"hasThreshold"))

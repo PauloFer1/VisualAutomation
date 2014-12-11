@@ -58,7 +58,7 @@ void DialogCalib::DoDataExchange(CDataExchange* pDX)
 	sliderBlur.SetRange(0, 10, TRUE);
 	sliderThres.SetRange(0, 255, TRUE);
 	sliderBright.SetRange(0, 255, TRUE);
-	sliderExp.SetRange(-10, 20, TRUE);
+	sliderExp.SetRange(0, 100, TRUE);
 	sliderContrast.SetRange(0, 10, TRUE);
 	sliderZoom.SetRange(0, 100, TRUE);
 	sliderThreshold.SetRange(0, 255, TRUE);

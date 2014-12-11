@@ -99,7 +99,10 @@ int Camera::setBrightness(int value)
 
 int Camera::setExposure(int value)
 {
-	cap.set(CV_CAP_PROP_EXPOSURE, value);
+	//cap.set(CV_CAP_PROP_EXPOSURE, value);
+	double exp = (this->m_ExposureInc*this->m_MaxExposure) / 100;
+	this->m_Exposure = exp*value;
+	is_Exposure(this->m_hCam, IS_EXPOSURE_CMD_SET_EXPOSURE, &m_Exposure, sizeof(m_Exposure));
 	return 1;
 }
 int Camera::setConstrast(int value)
@@ -207,6 +210,21 @@ INT Camera::InitCameraIDS(HIDS *hCam, HWND hWnd)
 		*hCam = (HIDS)(((INT)*hCam) | IS_ALLOW_STARTER_FW_UPLOAD);
 		nRet = is_InitCamera(hCam, hWnd);
 	}
+	CString str;
+
+	is_Exposure(this->m_hCam, IS_EXPOSURE_CMD_GET_EXPOSURE, &m_Exposure, sizeof(m_Exposure));
+	is_Exposure(this->m_hCam, IS_EXPOSURE_CMD_GET_EXPOSURE_RANGE_INC, &m_ExposureInc, sizeof(m_ExposureInc));
+	is_Exposure(this->m_hCam, IS_EXPOSURE_CMD_GET_EXPOSURE_RANGE_MAX, &m_MaxExposure, sizeof(m_MaxExposure));
+	is_Exposure(this->m_hCam, IS_EXPOSURE_CMD_GET_EXPOSURE_RANGE_MIN, &m_MinExposure, sizeof(m_MinExposure));
+
+	str.Format(_T("val: %f"), this->m_MinExposure);
+	AfxMessageBox(str);
+
+	str.Format(_T("val: %f"), this->m_ExposureInc);
+	AfxMessageBox(str);
+
+	str.Format(_T("val: %f"), this->m_MaxExposure);
+	AfxMessageBox(str);
 
 	return nRet;
 }

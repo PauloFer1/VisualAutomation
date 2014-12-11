@@ -34,6 +34,10 @@ public:
 	INT     m_nRenderMode;  // render  mode
 	SENSORINFO m_sInfo;	    // sensor information struct
 	char*						m_pbmpInfo;
+	double		m_MaxExposure;
+	double		m_Exposure;
+	double		m_ExposureInc;
+	double		m_MinExposure;
 
 	INT InitCameraIDS(HIDS *hCam, HWND hWnd);
 	bool OpenCamera();

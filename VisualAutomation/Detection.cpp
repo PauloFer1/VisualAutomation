@@ -143,12 +143,12 @@ int Detection::showWnd()
 }
 void Detection::destroyWnd()
 {
-isRender = false;
-// destroyWindow("CONTOUR");
+	isRender = false;
+	// destroyWindow("CONTOUR");
 }
 void Detection::method()
 {
-AfxMessageBox(L"Hello!");
+	AfxMessageBox(L"Hello!");
 }
 int Detection::closeCam()
 {
@@ -157,18 +157,18 @@ return 1;
 }
 int Detection::deleteImg()
 {
-m_img.Destroy();
-return 0;
+	m_img.Destroy();
+	return 0;
 }
 int Detection::setThreshold(int value)
 {
-thresholdValue = value;
-return 0;
+	thresholdValue = value;
+	return 0;
 }
 int Detection::setBlur(int value)
 {
-blurValue = value;
-return 0;
+	blurValue = value;
+	return 0;
 }
 int Detection::processImage()
 {
@@ -185,7 +185,6 @@ int Detection::processImage()
 	if (thresholdProcValue != 0)
 		blured = thresholdImg(thresholdProcValue, blured, 0);
 
-	//removeNoiseMat(sample, blured);
 	//blured.convertTo(lap, -1, alpha, beta);
 	Canny(blured, canny_output, thresholdValue, thresholdValue * 2, 3);
 	//»»»»»»»» CENTER CROSS
@@ -195,12 +194,12 @@ int Detection::processImage()
 	Point m2 = Point(imgWidth / 2 + 20, imgHeight / 2);
 	Point m3 = Point(imgWidth / 2, imgHeight / 2 - 20);
 	Point m4 = Point(imgWidth / 2, imgHeight / 2 + 20);
-	line(clone, m1, m2, Scalar(0, 255, 255), 1, CV_AA);
-	line(clone, m3, m4, Scalar(0, 255, 255), 1, CV_AA);
+	line(src, m1, m2, Scalar(0, 255, 255), 1, CV_AA);
+	line(src, m3, m4, Scalar(0, 255, 255), 1, CV_AA);
 	int rowM, rowL, rowR, rowB, colL, colR, col2L, col2R = 0;
 	const int INC_HEIGHT = 60;
-	//**RED
-	//inRange(src, filterColor, filterColor, redOnly);
+
+	travelPixels(blured);
 	
 	if (isCannyWnd)
 		renderCanny(canny_output);
@@ -208,7 +207,7 @@ int Detection::processImage()
 	{
 		renderProcImage(blured);
 	}
-	//vector<Vec4i> lines;
+	vector<Vec4i> lines;
 	//checkLines(blured, src, lines);
 	lap.release();
 	src_gray.release();
@@ -218,6 +217,66 @@ int Detection::processImage()
 	redOnly.release();
 	
 	return(1);
+}
+int Detection::travelPixels(Mat src)
+{
+	int pxYL=1;
+	int pxYR=1;
+	for (int i = src.rows/2+20; i > 0; i--)
+	{
+		if ((int)src.at<uchar>(i, src.cols/2) > 0)
+		{
+			Point m1 = Point(imgWidth / 2 - 20, i);
+			Point m2 = Point(imgWidth / 2 + 20, i);
+			line(this->src, m1, m2, Scalar(0, 0, 255), 1, CV_AA);
+			pxYL = i;
+			pxYR = i;
+			break;
+		}
+	}
+	for (int i = src.cols / 2; i > 0; i--)
+	{
+		if ((int)src.at<uchar>(pxYL, i) == 0 && pxYL>0 && pxYL<src.rows){
+			pxYL++;
+			if ((int)src.at<uchar>(pxYL, i) == 0 && pxYL>0 && pxYL<src.rows){
+				pxYL ++;
+				if ((int)src.at<uchar>(pxYL, i) == 0 && pxYL>0 && pxYL<src.rows){
+					pxYL -= 3;
+					if ((int)src.at<uchar>(pxYL, i) == 0 && pxYL>0 && pxYL<src.rows){
+						pxYL--;
+						if ((int)src.at<uchar>(pxYL, i) == 0 && pxYL>0 && pxYL<src.rows){
+							Point m3 = Point(i, pxYL - 20);
+							Point m4 = Point(i, pxYL + 20);
+							line(this->src, m3, m4, Scalar(0, 0, 255), 1, CV_AA);
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	for (int i = src.cols / 2; i < src.cols; i++)
+	{
+		if ((int)src.at<uchar>(pxYR, i) == 0 && pxYL>0 && pxYL<src.rows){
+			pxYR++;
+			if ((int)src.at<uchar>(pxYR, i) == 0 && pxYL>0 && pxYL<src.rows){
+				pxYR ++;
+				if ((int)src.at<uchar>(pxYR, i) == 0 && pxYL>0 && pxYL<src.rows){
+					pxYR -= 3;
+					if ((int)src.at<uchar>(pxYR, i) == 0 && pxYL>0 && pxYL<src.rows){
+						pxYR--;
+						if ((int)src.at<uchar>(pxYR, i) == 0 && pxYL>0 && pxYL<src.rows){
+							Point m3 = Point(i, pxYR - 20);
+							Point m4 = Point(i, pxYR + 20);
+							line(this->src, m3, m4, Scalar(0, 0, 255), 1, CV_AA);
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	return(0);
 }
 int Detection::renderCanny(Mat canny)
 {
