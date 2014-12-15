@@ -1,5 +1,8 @@
 #pragma once
 #include "afxwin.h"
+#include "Camera.h"
+#include "Detection.h"
+
 
 
 // CDialogVision dialog
@@ -23,4 +26,11 @@ public:
 	CStatic labelValueX;
 	CStatic labelValueY;
 	CStatic labelValueRot;
+	CStatic imageViewer;
+	void initVision();
+	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedCancel();
+	CStatic statusText;
+	void setEnable(int i);
+	afx_msg void OnBnClickedButton2();
 };

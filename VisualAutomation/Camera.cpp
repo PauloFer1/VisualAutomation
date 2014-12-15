@@ -77,7 +77,6 @@ int Camera::closeCamera()
 		is_ExitCamera(m_hCam);
 	} 
 
-	cap.release();
 	hasCamera = false;
 	return 1;
 }
@@ -100,8 +99,10 @@ int Camera::setBrightness(int value)
 int Camera::setExposure(int value)
 {
 	//cap.set(CV_CAP_PROP_EXPOSURE, value);
-	double exp = (this->m_ExposureInc*this->m_MaxExposure) / 100;
-	this->m_Exposure = exp*value;
+	//double exp = (this->m_ExposureInc*this->m_MaxExposure) / 100;
+	double exp = (value*this->m_MaxExposure) / 100;
+	//this->m_Exposure = exp*value;
+	this->m_Exposure = exp;
 	is_Exposure(this->m_hCam, IS_EXPOSURE_CMD_SET_EXPOSURE, &m_Exposure, sizeof(m_Exposure));
 	return 1;
 }
@@ -218,13 +219,13 @@ INT Camera::InitCameraIDS(HIDS *hCam, HWND hWnd)
 	is_Exposure(this->m_hCam, IS_EXPOSURE_CMD_GET_EXPOSURE_RANGE_MIN, &m_MinExposure, sizeof(m_MinExposure));
 
 	str.Format(_T("val: %f"), this->m_MinExposure);
-	AfxMessageBox(str);
 
 	str.Format(_T("val: %f"), this->m_ExposureInc);
-	AfxMessageBox(str);
 
 	str.Format(_T("val: %f"), this->m_MaxExposure);
-	AfxMessageBox(str);
+
+	this->setExposure(Constants::getInstance()->getExposure());
+//	AfxMessageBox(str);
 
 	return nRet;
 }
@@ -293,10 +294,6 @@ void Camera::captureImg()
 HWND Camera::getWndDisplay()
 {
 	return(m_hWndDisplay);
-}
-void Camera::setWndDisplay(CStatic * wndD)
-{
-//	this->m_hWndDisplay = G
 }
 char* Camera::getFrame()
 {

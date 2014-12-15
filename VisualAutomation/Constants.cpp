@@ -54,13 +54,13 @@ void Constants::setTypeThresh(int val){
 void Constants::setHasThreshold(bool val){
 	this->hasThreshold = val;
 }
-void Constants::setCalibVal(float val){
+void Constants::setCalibVal(int val){
 	this->calibrationVal = val;
 }
 void Constants::setThresholdVal(int val){
 	this->thresholdVal = val;
 }
-float Constants::getCalibVal(){
+int Constants::getCalibVal(){
 	return(this->calibrationVal);
 }
 int Constants::getThresholdVal(){
@@ -123,4 +123,12 @@ int Constants::getBright()
 bool Constants::getHasThreshold()
 {
 	return this->hasThreshold;
+}
+int Constants::getHasThresholdInt()
+{
+	int has = 0;
+	if (this->hasThreshold)
+		has = 1;
+
+	return has;
 }

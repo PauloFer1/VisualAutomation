@@ -27,7 +27,6 @@ void DialogCalib::initVision()
 	if (Camera::getInstance()->hasCamera == false)
 	{
 		Camera::getInstance()->initCamera();
-		Camera::getInstance()->setWndDisplay(&imageViewer);
 	}
 	Detection::getInstance()->imgWnd = &imageViewer;
 }
@@ -40,16 +39,12 @@ void DialogCalib::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CALIB_IMG, imageViewer);
 	DDX_Control(pDX, IDC_SLIDER_BLUR, sliderBlur);
-	DDX_Control(pDX, IDC_SLIDER_BRIGH, sliderBright);
 	DDX_Control(pDX, IDC_SLIDER_EXP, sliderExp);
 	DDX_Control(pDX, IDC_SLIDER_THRE, sliderThres);
-	DDX_Control(pDX, IDC_SLIDER_CONTRAST, sliderContrast);
 	DDX_Control(pDX, IDC_SLIDER_ZOOM, sliderZoom);
 	DDX_Control(pDX, IDC_SLIDER_THRESHOLD, sliderThreshold);
 	DDX_Radio(pDX, IDC_RADIO1, typeThreshold);
 	DDV_MinMaxInt(pDX, typeThreshold, 0, 1);
-	//  DDX_Radio(pDX, IDC_RADIO3, thresholdFunction);
-	//  DDV_MinMaxInt(pDX, thresholdFunction, 0, 1);
 	DDX_Control(pDX, IDC_CHECK1, checkAdaptive);
 	DDX_Control(pDX, IDC_CHECK2, useThreshCheckl);
 	DDX_Control(pDX, IDC_EDIT1, objWidthInput);
@@ -57,12 +52,27 @@ void DialogCalib::DoDataExchange(CDataExchange* pDX)
 
 	sliderBlur.SetRange(0, 10, TRUE);
 	sliderThres.SetRange(0, 255, TRUE);
-	sliderBright.SetRange(0, 255, TRUE);
 	sliderExp.SetRange(0, 100, TRUE);
-	sliderContrast.SetRange(0, 10, TRUE);
 	sliderZoom.SetRange(0, 100, TRUE);
 	sliderThreshold.SetRange(0, 255, TRUE);
-	checkAdaptive.SetCheck(1);
+	
+
+	sliderExp.SetPos((Constants::getInstance()->getExposure()*100)/ Camera::getInstance()->m_MaxExposure);
+	Detection::getInstance()->setThresholdValue(Constants::getInstance()->getThresholdVal());
+	if (Constants::getInstance()->getTypeThresh() == 1)
+	{
+		checkAdaptive.SetCheck(1);
+		Detection::getInstance()->thresholdFunction == 0;
+	}
+	else
+		Detection::getInstance()->thresholdFunction == 1;
+
+	if (Constants::getInstance()->getHasThreshold())
+	{
+		useThreshCheckl.SetCheck(1);
+		Detection::getInstance()->useThreshold = true  ;
+	}
+	sliderThreshold.SetPos(Constants::getInstance()->getThresholdVal());
 
 	CString w;
 	w.Format(_T("%d"), Constants::getInstance()->getObjWidth());
@@ -84,17 +94,16 @@ BEGIN_MESSAGE_MAP(DialogCalib, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_BLUR, &DialogCalib::OnCustomdrawSliderBlur)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_THRE, &DialogCalib::OnNMCustomdrawSliderThre)
-	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_BRIGH, &DialogCalib::OnNMCustomdrawSliderBrigh)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_EXP, &DialogCalib::OnNMCustomdrawSliderExp)
 	ON_WM_HSCROLL()
 	ON_BN_CLICKED(IDC_BUTTON_CANNY_VIEWER, &DialogCalib::OnBnClickedButtonCannyViewer)
 	ON_BN_CLICKED(IDC_BUTTON_PROC_IMG_VIEWER, &DialogCalib::OnBnClickedButtonProcImgViewer)
-	ON_BN_CLICKED(IDC_MFCCOLORBUTTON1, &DialogCalib::OnBnClickedMfccolorbutton1)
 	ON_BN_CLICKED(IDC_RADIO1, &DialogCalib::OnBnClickedRadio1)
 	ON_BN_CLICKED(IDC_RADIO2, &DialogCalib::OnBnClickedRadio2)
 	ON_BN_CLICKED(IDC_CHECK1, &DialogCalib::OnBnClickedCheck1)
 	ON_BN_CLICKED(IDC_CHECK2, &DialogCalib::OnBnClickedCheck2)
 	ON_BN_CLICKED(IDC_BUTTON1, &DialogCalib::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON_CALIBRATE, &DialogCalib::OnBnClickedButtonCalibrate)
 END_MESSAGE_MAP()
 
 
@@ -157,23 +166,12 @@ void DialogCalib::OnNMCustomdrawSliderThre(NMHDR *pNMHDR, LRESULT *pResult)
 	// TODO: Add your control notification handler code here
 	*pResult = 0;
 }
-
-
-void DialogCalib::OnNMCustomdrawSliderBrigh(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
-	// TODO: Add your control notification handler code here
-	*pResult = 0;
-}
-
-
 void DialogCalib::OnNMCustomdrawSliderExp(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
 	// TODO: Add your control notification handler code here
 	*pResult = 0;
 }
-
 
 void DialogCalib::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
@@ -195,16 +193,6 @@ void DialogCalib::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	{
 		Camera::getInstance()->setExposure(value);
 		Constants::getInstance()->setExposure(value);
-	}
-	else if(pSlider == &sliderBright)
-	{
-		Camera::getInstance()->setBrightness(value);
-		Constants::getInstance()->setBright(value);
-	}
-	else if (pSlider == &sliderContrast)
-	{                        
-		Camera::getInstance()->setConstrast(value);
-		Constants::getInstance()->setConstrast(value);
 	}
 	else if (pSlider == &sliderZoom)
 	{
@@ -236,18 +224,6 @@ void DialogCalib::OnBnClickedButtonProcImgViewer()
 }
 
 
-void DialogCalib::OnBnClickedMfccolorbutton1()
-{
-	// TODO: Add your control notification handler code here
-	COLORREF color = colorPick.GetColor();
-	int r = (GetRValue(color));
-	int b = GetBValue(color);
-	int g = GetGValue(color);
-	Detection::getInstance()->setFilterColor(r, g, b);
-
-}
-
-
 
 
 
@@ -273,6 +249,7 @@ void DialogCalib::OnBnClickedRadio2()
 	else
 	{
 		Detection::getInstance()->typeThreshold = ADAPTIVE_THRESH_MEAN_C;
+
 		
 	}
 }
@@ -285,11 +262,17 @@ void DialogCalib::OnBnClickedCheck1()
 {
 	CString str;
 	str.Format(_T("val: %d"), checkAdaptive.GetCheck());
-//	AfxMessageBox(str);
-	if (checkAdaptive.GetCheck())
+	//AfxMessageBox(str);
+	if (checkAdaptive.GetCheck() == 0)
+	{
 		Detection::getInstance()->thresholdFunction = 0;
+		Constants::getInstance()->setTypeThresh(0);
+	}
 	else
+	{
 		Detection::getInstance()->thresholdFunction = 1;
+		Constants::getInstance()->setTypeThresh(1);
+	}
 }
 
 
@@ -297,11 +280,17 @@ void DialogCalib::OnBnClickedCheck2()
 {
 	CString str;
 	str.Format(_T("val: %d"), useThreshCheckl.GetCheck());
-		//AfxMessageBox(str);
-	if (useThreshCheckl.GetCheck())
+	AfxMessageBox(str);
+	if (useThreshCheckl.GetCheck()==1)
+	{
 		Detection::getInstance()->useThreshold = true;
+		Constants::getInstance()->setHasThreshold(true);
+	}
 	else
+	{
 		Detection::getInstance()->useThreshold = false;
+		Constants::getInstance()->setHasThreshold(false);
+	}
 }
 
 
@@ -318,4 +307,13 @@ void DialogCalib::OnBnClickedButton1()
 	Constants::getInstance()->setObjHeight(h);
 
 	AfxMessageBox(_T("WIDTH & HEIGHT CHANGED"), MB_OK|MB_ICONINFORMATION);
+}
+
+
+void DialogCalib::OnBnClickedButtonCalibrate()
+{
+	if(Detection::getInstance()->calibrateMM()==1)
+		AfxMessageBox(_T("CALIBRATED"), MB_OK | MB_ICONINFORMATION);
+	else
+		AfxMessageBox(_T("ERROR CALIBRATING!"));
 }

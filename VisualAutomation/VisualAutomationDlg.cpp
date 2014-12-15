@@ -87,6 +87,7 @@ BEGIN_MESSAGE_MAP(CVisualAutomationDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CVisualAutomationDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON2, &CVisualAutomationDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CVisualAutomationDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDCANCEL, &CVisualAutomationDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -185,19 +186,31 @@ HCURSOR CVisualAutomationDlg::OnQueryDragIcon()
 void CVisualAutomationDlg::OnClose()
 {
 	if (CanExit())
+	{
+		if (Camera::getInstance()->hasCamera)
+			Camera::getInstance()->closeCamera();
 		CDialogEx::OnClose();
+	}
 }
 
 void CVisualAutomationDlg::OnOK()
 {
 	if (CanExit())
+	{
+		if (Camera::getInstance()->hasCamera)
+			Camera::getInstance()->closeCamera();
 		CDialogEx::OnOK();
+	}
 }
 
 void CVisualAutomationDlg::OnCancel()
 {
 	if (CanExit())
+	{
+		if (Camera::getInstance()->hasCamera)
+			Camera::getInstance()->closeCamera();
 		CDialogEx::OnCancel();
+	}
 }
 
 BOOL CVisualAutomationDlg::CanExit()
@@ -238,9 +251,6 @@ void CVisualAutomationDlg::OnBnClickedButton2()
 	//if (!Detection::getInstance()->hasCam)
 	//	d->initCam();
 	m_calib.initVision();
-/*	CString str;
-	str.Format(_T("val: %d"), d->flag);
-	AfxMessageBox(str);*/
 	d->showWnd();
 	m_calib.DoModal();
 //	m_calib.ShowWindow(WS_MAXIMIZEBOX);
@@ -252,5 +262,15 @@ void CVisualAutomationDlg::OnBnClickedButton3()
 {
 	// TODO: Add your control notification handler code here
 	CDialogVision m_vision;
+	Detection::getInstance()->showWnd();
+	Detection::getInstance()->startVision();
+	m_vision.initVision();
 	m_vision.DoModal();
+}
+
+
+void CVisualAutomationDlg::OnBnClickedCancel()
+{
+	// TODO: Add your control notification handler code here
+	CDialogEx::OnCancel();
 }

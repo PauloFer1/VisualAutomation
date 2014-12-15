@@ -33,7 +33,7 @@ public:
 	void setTypeThresh(int val);
 	void setObjWidth(int val);
 	void setObjHeight(int val);
-	void setCalibVal(float val);
+	void setCalibVal(int val);
 	void setThresholdVal(int val);
 	int getBlur();
 	int getCanny();
@@ -45,7 +45,10 @@ public:
 	int getTypeThresh();
 	int getBright();
 	bool getHasThreshold();
-	float getCalibVal();
+	int getCalibVal();
 	int getThresholdVal();
+	int actHorDist;
+	int actVerDist;
+	int getHasThresholdInt();
 };
 

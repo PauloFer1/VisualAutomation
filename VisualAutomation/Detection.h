@@ -2,6 +2,7 @@
 #include "opencv2\core\core.hpp"
 #include "opencv2\highgui\highgui.hpp"
 #include "opencv2\imgproc\imgproc.hpp"
+#include "Constants.h"
 
 using namespace cv;
 using namespace std;
@@ -26,45 +27,61 @@ public:
 	Mat src;
 	Mat src_gray;
 	Mat src_canny;
-	int initCam();
 	bool hasCam;
-	int closeCam();
 	CStatic *imgWnd;
 	CImage m_img;
-	int deleteImg();
-//	int setBlur;
-//	int setThreshold;
-	int setThreshold(int value);
-	int setBlur(int value);
 	int blurValue;
 	int thresholdValue;
-	int processImage();
 	CImage m_canny;
 	CStatic* cannyWnd;
+	Scalar filterColor;
+	int thresholdProcValue;
+	int typeThreshold;
+	int thresholdFunction;
+	bool useThreshold;
+	int calibValue;
+	bool hasVision=false;
+	bool canRead = true;
+public:
+	int initCam();
+	int closeCam();
+	int deleteImg();
+	int setThreshold(int value);
+	int setBlur(int value);
+	int processImage();
 	int showCanny();
 	int showProcImage();
 	int closeCanny();
 	int closeProcImage();
 	int renderProcImage(Mat img);
-	Scalar filterColor;
 	int setFilterColor(int r, int g, int b);
 	int applyContrast(int value);
 	Mat thresholdImg(int value, Mat src, int type);
-	int thresholdProcValue;
 	int setThresholdValue(int value);
-	int typeThreshold;
-	int thresholdFunction;
 	int removeNoiseMat(Mat * imgs, Mat dst);
-	bool useThreshold;
 	void checkLines(Mat src, Mat dst, vector<Vec4i> lines);
 	int travelPixels(Mat img);
+	int pixelsToMm(int px);
+	int mmToPixels(int mm);
+	int calibrateMM();
+	void drawGripper(Mat img, Point2i center, Rect rect, float angle);
+	void calculateGripper(int x, int y);
+	int detectGap(int it, int* px);
+	Point2i getOffset();
+	void startVision();
+	void enableRead();
+	__event void enableOut(int i);
+	__event void enableRead(int i);
 private:
 	int imgWidth;
 	int imgHeight;
 	int renderCanny(Mat canny);
 	bool isCannyWnd;
 	bool isProcWnd;
-	Mat* sample;
-	
+	int detectGap(int* it, int* pos, int* gap);
+	int detectGapVer(int it, int pos, int gap);
+	HANDLE renderSemaphore;
+	vector<Point2i> sample;
+	int sampleSize = 6;
 };
 

@@ -147,8 +147,11 @@ void XMLLoader::loadDOM()
 			{
 				pNode->get_text(&s);
 				sc = _com_util::ConvertBSTRToString(s);
-				v = stof(sc);
+				v = atoi(sc);
 				VARIANT val;
+				CString str;
+				str.Format(_T("%d"), v);
+			//	AfxMessageBox(str);
 				pNode->get_nodeValue(&val);
 				Constants::getInstance()->setCalibVal(v);
 			}

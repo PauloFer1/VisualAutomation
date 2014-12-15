@@ -4,6 +4,7 @@
 #include "opencv2\highgui\highgui.hpp"
 #include "opencv2\imgproc\imgproc.hpp"
 #include "version.h"
+#include "Constants.h"
 
 using namespace cv;
 using namespace std;

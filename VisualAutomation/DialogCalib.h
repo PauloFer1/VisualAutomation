@@ -34,20 +34,14 @@ public:
 	afx_msg void OnNMCustomdrawSlider2(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnCustomdrawSliderBlur(NMHDR *pNMHDR, LRESULT *pResult);
 	CSliderCtrl sliderBlur;
-	CSliderCtrl sliderBright;
 	CSliderCtrl sliderExp;
 	CSliderCtrl sliderThres;
 	afx_msg void OnNMCustomdrawSliderThre(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnNMCustomdrawSliderBrigh(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMCustomdrawSliderExp(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	CStatic cannyViewer;
 	afx_msg void OnBnClickedButtonCannyViewer();
 	afx_msg void OnBnClickedButtonProcImgViewer();
-	afx_msg void OnBnClickedMfccolorbutton1();
-	CMFCColorButton colorPick;
-	CSliderCtrl sliderContrast;
-	afx_msg void OnNMCustomdrawSliderContrast2(NMHDR *pNMHDR, LRESULT *pResult);
 	CSliderCtrl sliderZoom;
 	afx_msg void OnNMCustomdrawSliderThreshold(NMHDR *pNMHDR, LRESULT *pResult);
 	CSliderCtrl sliderThreshold;
@@ -68,4 +62,6 @@ public:
 	CEdit objWidthInput;
 	CEdit objHeightInput;
 	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButtonCalibrate();
+	void renderVision();
 };
